@@ -1,0 +1,29 @@
+:root {
+  /* 设计系统变量（可按需扩展） */
+  --app-bg: #f6f6f6;
+  --app-fg: #0f0f0f;
+  --card-bg: #ffffff;
+  --muted-fg: #475569;
+  --border: rgba(15, 15, 15, 0.12);
+
+  --primary: #646cff;
+  --primary-hover: #535bf2;
+
+  --radius: 12px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.16);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --app-bg: #2f2f2f;
+    --app-fg: #f6f6f6;
+    --card-bg: rgba(15, 15, 15, 0.6);
+    --muted-fg: #cbd5e1;
+    --border: rgba(246, 246, 246, 0.16);
+
+    --primary: #24c8db;
+    --primary-hover: #61d5e2;
+  }
+}
+
