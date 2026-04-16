@@ -18,6 +18,23 @@
       }
     ],
     "security": {
+      "capabilities": [
+        "default",
+        {
+          "identifier": "allow-create-live2d-webview-window",
+          "description": "Allow frontend to create standalone Live2D webview windows",
+          "windows": [
+            "main"
+          ],
+          "permissions": [
+            "core:webview:default",
+            "core:webview:allow-create-webview-window",
+            "core:window:allow-show",
+            "core:window:allow-set-focus",
+            "core:window:allow-set-always-on-top"
+          ]
+        }
+      ],
       "csp": null
     }
   },

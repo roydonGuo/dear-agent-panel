@@ -2,6 +2,7 @@
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import * as PIXI from "pixi.js";
 import { Live2DModel } from "pixi-live2d-display/cubism4";
+import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
 
 // pixi-live2d-display 内部依赖全局 PIXI
 window.PIXI = PIXI;
@@ -13,6 +14,64 @@ let mouthIntervalId: number | null = null;
 let requestAnimationId: number | null = null;
 
 const live2dCanvas = ref<HTMLCanvasElement | null>(null);
+const openError = ref<string | null>(null);
+
+const LIVE2D_WINDOW_LABEL = "live2d-standalone-window";
+
+const openLive2dStandaloneWindow = async () => {
+  console.log("[Home] openLive2dStandaloneWindow clicked");
+  openError.value = null;
+
+  try {
+    const existing = await WebviewWindow.getByLabel(LIVE2D_WINDOW_LABEL);
+    if (existing) {
+      console.log("[Home] existing window found, showing...");
+      await existing.show();
+      await existing.setFocus?.();
+      return;
+    }
+
+    const baseUrl = window.location.href.split("#")[0];
+    const url = `${baseUrl}#/live2d`;
+    console.log("[Home] creating window with url:", url);
+
+    const win = new WebviewWindow(LIVE2D_WINDOW_LABEL, {
+      url,
+      title: "Live2D",
+      width: 520,
+      height: 520,
+      resizable: true,
+      focus: true,
+      visible: true,
+      center: true,
+      decorations: false,
+      transparent: true,
+      skipTaskbar: true,
+      // Tauri 会将 window/webview 背景设为透明（不同平台 alpha 行为略有差异）
+      backgroundColor: "#00000000",
+    });
+
+    win.once("tauri://created", async () => {
+      console.log("[Home] live2d webview window created");
+      try {
+        await win.show();
+        await win.setBackgroundColor("#00000000");
+        await win.setAlwaysOnTop(true);
+        await win.setFocus?.();
+      } catch (e) {
+        console.warn("[Home] setBackgroundColor failed:", e);
+      }
+    });
+
+    win.once("tauri://error", (e) => {
+      console.error("[Home] live2d webview window error:", e);
+      openError.value = `独立窗口创建失败：${String((e as any)?.payload ?? e)}`;
+    });
+  } catch (e) {
+    console.error("[Home] openLive2dStandaloneWindow failed:", e);
+    openError.value = `独立窗口创建失败：${String(e)}`;
+  }
+};
 
 onBeforeUnmount(() => {
   if (mouthIntervalId != null) {
@@ -98,6 +157,17 @@ async function speakFn() {
       <button class="px-3 py-2 text-sm rounded bg-blue-500 text-white hover:brightness-110" @click="speakFn">
         人物说话
       </button>
+      <button
+        class="px-3 py-2 text-sm rounded bg-black/20 hover:bg-black/30"
+        style="color: var(--app-fg);"
+        @click="openLive2dStandaloneWindow"
+      >
+        独立窗口
+      </button>
+    </div>
+
+    <div v-if="openError" class="mb-3 text-xs rounded px-3 py-2" style="background: rgba(255,0,0,0.12); color: var(--app-fg);">
+      {{ openError }}
     </div>
 
     <div
