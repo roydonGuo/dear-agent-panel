@@ -139,27 +139,27 @@ const speakFn = async () => {
 };
 
 
-
 </script>
 
 <template>
   <main class="container min-h-screen min-w-full px-6 py-10">
 
-<!--    <div class="row">-->
-<!--      <a href="https://vite.dev" target="_blank">-->
-<!--        <img src="/vite.svg" class="logo vite" alt="Vite logo"/>-->
-<!--      </a>-->
-<!--      <a href="https://tauri.app" target="_blank">-->
-<!--        <img src="/tauri.svg" class="logo tauri" alt="Tauri logo"/>-->
-<!--      </a>-->
-<!--      <a href="https://vuejs.org/" target="_blank">-->
-<!--        <img src="./assets/vue.svg" class="logo vue" alt="Vue logo"/>-->
-<!--      </a>-->
-<!--    </div>-->
-
-    <button @click="expressionFn">表情切换</button>
-    <button @click="mouthFn">嘴型变换</button>
-    <button @click="speakFn">人物说话</button>
+    <!--    <div class="row">-->
+    <!--      <a href="https://vite.dev" target="_blank">-->
+    <!--        <img src="/vite.svg" class="logo vite" alt="Vite logo"/>-->
+    <!--      </a>-->
+    <!--      <a href="https://tauri.app" target="_blank">-->
+    <!--        <img src="/tauri.svg" class="logo tauri" alt="Tauri logo"/>-->
+    <!--      </a>-->
+    <!--      <a href="https://vuejs.org/" target="_blank">-->
+    <!--        <img src="./assets/vue.svg" class="logo vue" alt="Vue logo"/>-->
+    <!--      </a>-->
+    <!--    </div>-->
+    <div class="flex">
+      <button class="p-2 m-2 bg-blue-200" @click="expressionFn">表情切换</button>
+      <button class="p-2 m-2 bg-blue-300" @click="mouthFn">嘴型变换</button>
+      <button class="p-2 m-2 bg-blue-400" @click="speakFn">人物说话</button>
+    </div>
 
     <div class="canvasWrap">
       <canvas id="myCanvas"/>
